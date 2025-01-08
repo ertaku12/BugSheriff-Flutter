@@ -1,0 +1,33 @@
+FROM python:3.10-slim
+
+RUN apt-get update -y && \
+    apt-get install -y supervisor && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+
+# RUN useradd -m user
+# USER user
+
+WORKDIR /app
+
+COPY requirements.txt requirements.txt
+
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+COPY app .
+
+ENV FLASK_APP=run.py
+ENV FLASK_ENV=development
+ENV PYTHONPATH=/app
+
+EXPOSE 5000
+
+CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0"]
+
+
+#docker rm $(docker ps -aq)
+#docker rmi $(docker images -q)
+
+
+

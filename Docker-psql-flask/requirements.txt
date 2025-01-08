@@ -1,0 +1,9 @@
+Flask
+Flask-SQLAlchemy
+Flask-Migrate
+psycopg2-binary
+Flask-JWT-Extended
+PyJWT
+flask-cors
+
+#gunicorn==20.1.0

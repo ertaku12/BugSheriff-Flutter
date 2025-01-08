@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: postgresql
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: bugsheriff
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - my_network
+
+  flask_app:
+    build: 
+      context: .
+      dockerfile: Dockerfile-flask
+    container_name: flask_app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    volumes:
+      - uploads:/app/uploads
+    environment:
+      DATABASE_URL: postgresql://admin:123456@db:5432/bugsheriff
+    networks:
+      - my_network
+
+volumes:
+  postgres_data:
+    driver: local
+  uploads:
+    driver: local
+
+networks:
+  my_network:
+    driver: bridge
+
